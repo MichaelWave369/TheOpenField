@@ -102,8 +102,10 @@ export function SpeechProvider({ children }) {
     setMessage('');
     setPlayback({ owner, mode: 'speaking', progress: 1, total: passages.length });
 
-    const chosenVoice = voices.find(voice => voice.voiceURI === voiceId)
-      || voices.find(voice => voice.lang?.toLowerCase().startsWith(lang.split('-')[0].toLowerCase()))
+    const languagePrefix = lang.split('-')[0].toLowerCase();
+    const matchesLanguage = voice => voice.lang?.toLowerCase().split('-')[0] === languagePrefix;
+    const chosenVoice = voices.find(voice => voice.voiceURI === voiceId && matchesLanguage(voice))
+      || voices.find(matchesLanguage)
       || null;
 
     function say(index) {
@@ -176,6 +178,8 @@ export function SpeechReader({ owner, segments, lang = 'en-US', label = 'this pa
   const active = playback.owner === owner;
   const mode = active ? playback.mode : 'idle';
   const textSegments = segments.filter(text => typeof text === 'string' && Boolean(text.trim()));
+  const languageVoices = voices.filter(voice => voice.lang?.toLowerCase().split('-')[0] === lang.split('-')[0].toLowerCase());
+  const selectedVoiceId = languageVoices.some(voice => voice.voiceURI === voiceId) ? voiceId : 'auto';
 
   // Only cancel this reader's audio if its contents are replaced or it leaves the page.
   useEffect(() => () => stopIfOwner(owner), [owner, stopIfOwner]);
@@ -206,9 +210,9 @@ export function SpeechReader({ owner, segments, lang = 'en-US', label = 'this pa
               </select>
             </div>
             <div><label htmlFor={'speech-voice-' + owner}>Voice</label>
-              <select id={'speech-voice-' + owner} value={voiceId} onChange={event => setVoiceId(event.target.value)}>
+              <select id={'speech-voice-' + owner} value={selectedVoiceId} onChange={event => setVoiceId(event.target.value)}>
                 <option value="auto">Browser default / match language</option>
-                {voices.map((voice, i) => <option key={voice.voiceURI + ':' + i} value={voice.voiceURI}>{voice.name} · {voice.lang}</option>)}
+                {languageVoices.map((voice, i) => <option key={voice.voiceURI + ':' + i} value={voice.voiceURI}>{voice.name} · {voice.lang}</option>)}
               </select>
             </div>
           </div>
