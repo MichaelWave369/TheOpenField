@@ -30,7 +30,7 @@ test('the site clearly separates philosophical possibility from obligation', () 
   assert.equal(grounding.length, 3);
   const all = grounding.map(g => g.text).join(' ').toLowerCase();
   assert.match(all, /not a fact everyone must accept/);
-  assert.match(all, /not a substitute/);
+  assert.match(all, /(?:not|nor) a substitute/);
 });
 
 test('GitHub Pages uses the repository project path', () => {
