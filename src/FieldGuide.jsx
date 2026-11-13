@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { fieldGuide, movements } from './fieldGuide.js';
+import { lessonNarration } from './narration.js';
+import { SpeechReader } from './SpeechReader.jsx';
 
 const PROGRESS_KEY = 'the-open-field-guide-progress-v1';
 const lessonIds = new Set(fieldGuide.map(lesson => lesson.id));
@@ -99,6 +101,7 @@ export default function FieldGuide({ onOpenNote }) {
             <div className="guide-lesson-mark" aria-hidden="true">{current.glyph}</div>
             <p className="guide-lesson-subtitle">{current.subtitle}</p>
             <h3>{current.title}</h3>
+            <SpeechReader key={'lesson-'+current.id} owner={'lesson-'+current.id} lang="en-US" label="this lesson" segments={lessonNarration(current)} />
             <div className="guide-copy-block"><span>THE IDEA</span><p>{current.idea}</p></div>
             <div className="guide-copy-block guide-evidence"><span>WHAT WE CAN SAY WITH CARE</span><p>{current.lens}</p></div>
             <div className="guide-copy-block guide-practice"><span>ONE SMALL THING TO TRY</span><p>{current.practice}</p></div>
