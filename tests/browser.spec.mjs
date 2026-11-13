@@ -12,7 +12,7 @@ test('the GitHub Pages production build really renders, with no JS exceptions', 
   await page.locator('.principle-card').first().click();
   await expect(page.locator('.principle-card').first()).toHaveAttribute('aria-expanded', 'true');
   await page.locator('#tab-compassion').click();
-  await expect(page.locator('#doorway-panel')).toContainText('Make suffering smaller');
+  await expect(page.locator('#doorway-panel')).toContainText('Care can be expressed');
   expect(pageErrors).toEqual([]);
 });
 
