@@ -1,0 +1,33 @@
+name: Build and test
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Set up Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Run content and safety tests
+        run: npm test
+      - name: Build GitHub Pages assets
+        run: npm run build
+      - name: Assert built entry and assets exist
+        run: |
+          test -f dist/index.html
+          test -f dist/favicon.svg
+          test -d dist/assets
+          grep -q '/TheOpenField/assets/' dist/index.html

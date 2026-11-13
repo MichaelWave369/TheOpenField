@@ -1,0 +1,60 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { principles, rooms, prompts, grounding } from '../src/content.js';
+
+test('nine inclusive principles are unique and substantive', () => {
+  assert.equal(principles.length, 9);
+  assert.equal(new Set(principles.map(p => p.number)).size, 9);
+  assert.equal(new Set(principles.map(p => p.title)).size, 9);
+  for (const p of principles) {
+    assert.ok(p.title.length > 8 && p.detail.length > 40);
+  }
+});
+
+test('four doorways carry usable practices and reflection questions', () => {
+  assert.deepEqual(rooms.map(room => room.id), ['presence','inquiry','compassion','creation']);
+  rooms.forEach(room => {
+    assert.ok(room.practice.length > 50);
+    assert.ok(room.question.endsWith('?'));
+  });
+});
+
+test('reflection questions remain open-ended', () => {
+  assert.ok(prompts.length >= 8);
+  assert.equal(new Set(prompts).size, prompts.length);
+  prompts.forEach(prompt => assert.ok(prompt.endsWith('?')));
+});
+
+test('the site clearly separates philosophical possibility from obligation', () => {
+  assert.equal(grounding.length, 3);
+  const all = grounding.map(g => g.text).join(' ').toLowerCase();
+  assert.match(all, /not a fact everyone must accept/);
+  assert.match(all, /(?:not|nor) a substitute/);
+});
+
+test('GitHub Pages uses the repository project path', () => {
+  const vite = fs.readFileSync(new URL('../vite.config.js', import.meta.url), 'utf8');
+  assert.match(vite, /base:\s*['"]\/TheOpenField\/['"]/);
+  const index = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+  assert.match(index, /id="root"/);
+});
+
+test('notebook is local-only and users can export or remove notes', () => {
+  const app = fs.readFileSync(new URL('../src/App.jsx', import.meta.url), 'utf8');
+  assert.match(app, /localStorage\.setItem/);
+  assert.match(app, /localStorage\.removeItem/);
+  assert.match(app, /URL\.createObjectURL/);
+  assert.match(app, /Nothing is required of you here/i);
+  assert.doesNotMatch(app, /\bfetch\s*\(/);
+});
+
+test('interactions have accessible names and reduced-motion option', () => {
+  const app = fs.readFileSync(new URL('../src/App.jsx', import.meta.url), 'utf8');
+  const css = fs.readFileSync(new URL('../src/styles.css', import.meta.url), 'utf8');
+  assert.match(app, /aria-expanded/);
+  assert.match(app, /role="tablist"/);
+  assert.match(app, /aria-live/);
+  assert.match(css, /prefers-reduced-motion/);
+  assert.match(css, /focus-visible/);
+});
