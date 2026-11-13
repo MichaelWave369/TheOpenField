@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { libraryTopics, libraryCategories } from './livingLibrary.js';
+import { libraryNarration } from './narration.js';
+import { SpeechReader } from './SpeechReader.jsx';
 
 const SAVED_KEY = 'the-open-field-library-saved-v1';
 const knownIds = new Set(libraryTopics.map(topic => topic.id));
@@ -123,6 +125,7 @@ export default function LivingLibrary({ onOpenNote }) {
               <div className="library-detail-symbol" aria-hidden="true">{selected.symbol}</div>
               <span className="library-detail-kicker">{selected.subtitle}</span>
               <h3>{selected.title}</h3>
+              <SpeechReader key={'library-'+selected.id} owner={'library-'+selected.id} lang="en-US" label="this perspective" segments={libraryNarration(selected)} />
               <section className="library-detail-block">
                 <h4>THE IDEA</h4>
                 <p>{selected.summary}</p>
