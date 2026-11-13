@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { grounding, principles, prompts, rooms } from './content.js';
 
 const NOTE_KEY = 'the-open-field-notes-v1';

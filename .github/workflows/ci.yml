@@ -31,3 +31,7 @@ jobs:
           test -f dist/favicon.svg
           test -d dist/assets
           grep -q '/TheOpenField/assets/' dist/index.html
+      - name: Install Chromium for browser smoke tests
+        run: npx playwright install --with-deps chromium
+      - name: Verify React actually renders in Chromium
+        run: npm run test:browser
