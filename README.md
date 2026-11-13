@@ -35,6 +35,12 @@ Nine original, curated entries link to the Stanford Encyclopedia of Philosophy, 
 
 Saved topics use browser-local `localStorage` and can be cleared. No server account, telemetry, reading score, or hidden synchronization. The Library data lives in `src/livingLibrary.js`, the UI in `src/LivingLibrary.jsx`, and the styling in `src/livingLibrary.css`. Corrections and contributions should follow [the Living Library editorial guide](docs/LIVING_LIBRARY_EDITORIAL.md).
 
+## The Listening Field (R0.4)
+
+Optional **browser-based read-aloud** is now available for every Field Guide lesson and Living Library entry. Playback is explicitly opt-in, with pause/resume/stop, voice choice, adjustable reading pace and written transcripts. A short visitor welcome is available in **English**, **Spanish**, and **French**; educational lessons and library content remain in English while translations can be reviewed.
+
+No microphone, login, recording, or Open Field speech server is required. The app narrates only public teaching text, **never private Field Notes**. The browser or device provides speech voices, which may use an online service depending on the visitor's system. See [The Listening Field accessibility and privacy guide](docs/LISTENING_FIELD.md).
+
 ## Run locally
 
 Requires Node.js 22+ and npm.

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { grounding, principles, prompts, rooms } from './content.js';
 import FieldGuide from './FieldGuide.jsx';
 import LivingLibrary from './LivingLibrary.jsx';
+import LanguageWelcome from './LanguageWelcome.jsx';
 
 const NOTE_KEY = 'the-open-field-notes-v1';
 
@@ -270,6 +271,7 @@ function App() {
           <button className="mobile-toggle" type="button" aria-expanded={menuOpen} aria-controls="primary-nav" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? 'Close' : 'Menu'} <span aria-hidden="true">{menuOpen ? '×' : '☰'}</span></button>
           <nav className={menuOpen ? 'main-nav nav-open' : 'main-nav'} id="primary-nav" aria-label="Main navigation">
             <a href="#invitation" onClick={() => setMenuOpen(false)}>The invitation</a>
+            <a href="#welcome-languages" onClick={() => setMenuOpen(false)}>Languages</a>
             <a href="#principles" onClick={() => setMenuOpen(false)}>Our principles</a>
             <a href="#doorways" onClick={() => setMenuOpen(false)}>Explore</a>
             <a href="#field-guide" onClick={() => setMenuOpen(false)}>Field guide</a>
@@ -306,6 +308,7 @@ function App() {
 
         <div className="marquee-line" aria-hidden="true"><span>PEOPLE ABOVE PROFIT</span><i>✳</i><span>LAUGHTER BEFORE HATRED</span><i>✳</i><span>TRUTH ABOVE CERTAINTY</span><i>✳</i><span>ALL ARE WELCOME</span></div>
 
+        <LanguageWelcome />
         <Principles />
         <Doorways />
         <FieldGuide onOpenNote={choosePrompt} />

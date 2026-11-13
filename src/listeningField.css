@@ -1,0 +1,79 @@
+/* R0.4: The Listening Field. Public text only, no audio autoplay. */
+.speech-reader { position: relative; border: 1px solid rgba(217,231,203,.33); background: rgba(10,31,21,.3); padding: 23px 24px; margin: 24px 0 27px; color: #edf2df; max-width: 100%; }
+.speech-reader-heading { display: flex; align-items: center; gap: 15px; }
+.speech-reader-symbol { font-size: 28px; color: #e6d8ab; line-height: 1; }
+.speech-reader-heading strong { font: 400 24px/1.1 'Playfair Display', Georgia,serif; }
+.speech-reader-heading p { color: #b0cdb3; margin: 6px 0 0; line-height: 1.5; font-size: 11px; }
+.speech-reader-controls { display: flex; flex-wrap: wrap; gap: 11px; align-items: center; margin: 20px 0 0; }
+.speech-reader-controls button { min-height: 44px; padding: 11px 16px; font-size: 12px; font-weight: 700; }
+.speech-primary { background: #e4eace; border: 1px solid #e4eace; color: #1c3d2b; }
+.speech-primary:hover { background: #f8f5e3; }
+.speech-stop { background: transparent; color: #dcead3; border: 1px solid #95b099; }
+.speech-stop:hover:not(:disabled) { background: rgba(228,244,217,.13); }
+.speech-stop:disabled { opacity: .37; cursor: not-allowed; }
+.speech-status { color: #e6d4a8; font-size: 12px; line-height: 1.5; margin: 11px 0 0; }
+.speech-settings { display: grid; grid-template-columns: 1fr 1.4fr; gap: 15px; margin-top: 19px; }
+.speech-settings > div { min-width: 0; }
+.speech-settings label { display: block; margin-bottom: 8px; color: #b4d2b4; font: 700 10px 'Manrope',sans-serif; letter-spacing: .07em; }
+.speech-settings select { min-width: 0; width: 100%; border-radius: 2px; border: 1px solid #6b9172; background: #254e39; color: #f0f2e5; font: 500 12px 'DM Sans',sans-serif; padding: 10px 9px; height: 41px; }
+.speech-settings select:focus-visible { outline: 3px solid #dcc18c; outline-offset: 2px; }
+.speech-settings-note { margin: 10px 0 0; font-size: 10px; color: #a3bca8; line-height: 1.5; }
+.speech-transcript { border-top: 1px solid rgba(227,242,220,.23); margin-top: 20px; padding-top: 14px; }
+.speech-transcript summary { font-size: 12px; font-weight: 700; color: #e9eddc; cursor: pointer; padding: 7px 0; }
+.speech-transcript summary:hover { color: #fff; }
+.speech-transcript-body { max-height: 260px; overflow: auto; padding: 7px 7px 0; border-left: 2px solid #89a889; margin-top: 9px; }
+.speech-transcript-body p { font-size: 12px; line-height: 1.85; color: #d2e3d0; margin-bottom: 14px; }
+.speech-unavailable { font-size: 12px; color: #f0d5a6; line-height: 1.7; }
+.speech-privacy { font-size: 10px; color: #9dbba4; margin: 14px 0 0; line-height: 1.75; }
+.speech-reader button:focus-visible,.speech-reader summary:focus-visible { outline: 3px solid #e3c892; outline-offset: 3px; }
+
+.welcome-language-section { background: radial-gradient(ellipse at 6% 20%,#e1e8d9 0%,transparent 48%),#f2f1e8; border-top: 1px solid #dbe2d7; }
+.welcome-language-layout { display: grid; grid-template-columns: minmax(220px,.7fr) minmax(0,1.32fr); gap: 10%; align-items: start; }
+.welcome-language-aside { position: relative; padding: 7px 0; }
+.welcome-language-aside .eyebrow { color: #55755a; font-size: 10px; }
+.welcome-language-decoration { display: block; font-size: clamp(110px,15vw,185px); font-weight: 400; color: #9eb29b; opacity: .55; line-height: 1.3; padding: 35px 0 13px; }
+.welcome-language-aside > p { max-width: 340px; font-size: 14px; line-height: 1.9; color: #516c58; }
+.welcome-language-aside .welcome-language-scope { border-top: 1px solid #bbcdb9; padding-top: 18px; font-size: 11px; color: #7b937a; line-height: 1.8; margin-top: 27px; }
+.welcome-language-tabs { display: flex; flex-wrap: wrap; gap: 9px; padding: 2px 0 22px; border-bottom: 1px solid #c9d5c4; }
+.welcome-language-tab { min-height: 43px; padding: 9px 17px; background: transparent; border: 1px solid #b2c4b3; border-radius: 30px; color: #55745d; font-size: 12px; font-weight: 700; }
+.welcome-language-tab:hover { background: #dce8d9; }
+.welcome-language-tab.active { background: #224b34; color: #f9f6e9; border-color: #224b34; }
+.welcome-language-copy { margin-top: 30px; animation: reveal .25s ease; }
+.welcome-language-copy h2 { font: 400 clamp(40px,4.5vw,64px)/1.2 'Playfair Display',Georgia,serif; letter-spacing: -.055em; color: #243e2e; max-width: 650px; margin-bottom: 22px; }
+.welcome-language-copy > p { color: #566f5a; font-size: 14px; line-height: 1.95; margin-bottom: 19px; max-width: 620px; }
+.welcome-language-copy blockquote { margin: 29px 0 17px; border-left: 2px solid #9eba9b; padding-left: 20px; color: #66886c; font: italic clamp(21px,2.4vw,30px)/1.5 'Playfair Display',Georgia,serif; }
+.welcome-language-main > .speech-reader { background: #1b422e; margin-top: 39px; max-width: 700px; }
+
+@media(max-width:1050px) {
+  .welcome-language-layout { gap: 6%; }
+  .welcome-language-decoration { font-size: 120px; }
+}
+@media(max-width:980px) and (min-width:761px) {
+  .nav-wrap { min-height: 72px; }
+  .mobile-toggle { display: inline-flex; align-items: center; gap: 13px; background: transparent; color: #fff; border: 1px solid rgba(255,255,255,.34); padding: 9px 13px; font-size: 12px; }
+  .mobile-toggle span { font-size: 15px; }
+  .main-nav { display: none; position: absolute; left: 0; right: 0; top: 72px; flex-direction: column; align-items: stretch; gap: 0; background: #173125; padding: 12px 30px 20px; box-shadow: 0 15px 22px rgba(0,0,0,.25); }
+  .main-nav.nav-open { display: flex; }
+  .main-nav > a { padding: 15px 8px; border-bottom: 1px solid rgba(255,255,255,.12); }
+  .main-nav .nav-cta { margin-top: 11px; justify-content: space-between; }
+}
+@media(max-width:760px) {
+  .welcome-language-layout { grid-template-columns: 1fr; gap: 25px; }
+  .welcome-language-decoration { display: none; }
+  .welcome-language-aside { padding-bottom: 8px; }
+  .welcome-language-aside > p { max-width: 650px; margin-top: 21px; }
+  .welcome-language-aside .welcome-language-scope { margin-top: 15px; }
+  .speech-settings { grid-template-columns: 1fr 1.25fr; }
+  .welcome-language-main > .speech-reader { max-width: none; }
+}
+@media(max-width:480px) {
+  .welcome-language-copy h2 { font-size: clamp(37px,10vw,51px); }
+  .welcome-language-tab { font-size: 11px; padding: 9px 13px; }
+  .speech-reader { padding: 18px 16px; }
+  .speech-settings { grid-template-columns: 1fr; }
+  .speech-reader-heading strong { font-size: 22px; }
+  .speech-settings select { font-size: 12px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .welcome-language-copy { animation: none !important; }
+}

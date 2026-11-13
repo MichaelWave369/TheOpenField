@@ -130,3 +130,108 @@ test('Living Library is accessible from mobile navigation', async ({ page }) => 
   await expect(page.locator('#living-library-title')).toBeVisible();
   await expect(page.locator('.library-detail h3')).toBeVisible();
 });
+
+
+test('browser read-aloud only starts on click and pause, resume, stop all work', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.__speechTest = { calls: [] };
+    class FakeUtterance { constructor(text) { this.text = text; this.lang = 'en-US'; this.rate = 1; } }
+    Object.defineProperty(window, 'SpeechSynthesisUtterance', { configurable: true, value: FakeUtterance });
+    const voiceList = [
+      { voiceURI: 'mock-english', lang: 'en-US', name: 'Mock English' },
+      { voiceURI: 'mock-spanish', lang: 'es-ES', name: 'Mock Spanish' },
+    ];
+    Object.defineProperty(window, 'speechSynthesis', { configurable: true, value: {
+      getVoices: () => voiceList,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      cancel: () => window.__speechTest.calls.push('cancel'),
+      speak: utterance => { window.__speechTest.calls.push('speak:' + utterance.text); utterance.onstart?.(); },
+      pause: () => window.__speechTest.calls.push('pause'),
+      resume: () => window.__speechTest.calls.push('resume'),
+    }});
+  });
+  await page.goto('./');
+  const lesson = page.locator('.guide-lesson-detail .speech-reader');
+  await expect(lesson.getByRole('button', { name: 'Read this lesson' })).toBeVisible();
+  const before = await page.evaluate(() => window.__speechTest.calls);
+  expect(before.filter(call => call.startsWith('speak:'))).toHaveLength(0);
+  await lesson.getByRole('button', { name: 'Read this lesson' }).click();
+  const after = await page.evaluate(() => window.__speechTest.calls);
+  expect(after.some(call => call.startsWith('speak:The Open Field. Lesson 01:'))).toBe(true);
+  await lesson.getByRole('button', { name: 'Pause reading' }).click();
+  await expect(lesson.getByRole('button', { name: 'Resume reading' })).toBeVisible();
+  await lesson.getByRole('button', { name: 'Resume reading' }).click();
+  await lesson.getByRole('button', { name: 'Stop' }).click();
+  await expect(lesson.getByRole('button', { name: 'Read this lesson' })).toBeVisible();
+  const calls = await page.evaluate(() => window.__speechTest.calls);
+  expect(calls).toContain('pause');
+  expect(calls).toContain('resume');
+  expect(calls).toContain('cancel');
+  await lesson.getByText('Read the full narration text').click();
+  await expect(lesson.locator('.speech-transcript-body')).toContainText('The Gift of Right Now');
+});
+
+test('switching to another lesson cancels old audio rather than stacking voices', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.__speechTest = { calls: [] };
+    class FakeUtterance { constructor(text) { this.text = text; } }
+    Object.defineProperty(window, 'SpeechSynthesisUtterance', { configurable: true, value: FakeUtterance });
+    Object.defineProperty(window, 'speechSynthesis', { configurable: true, value: {
+      getVoices: () => [], addEventListener: () => {}, removeEventListener: () => {},
+      cancel: () => window.__speechTest.calls.push('cancel'),
+      speak: utterance => { window.__speechTest.calls.push('speak'); utterance.onstart?.(); },
+      pause: () => {}, resume: () => {},
+    }});
+  });
+  await page.goto('./');
+  await page.locator('.guide-lesson-detail').getByRole('button', { name: 'Read this lesson' }).click();
+  const before = await page.evaluate(() => window.__speechTest.calls.filter(x => x === 'cancel').length);
+  await page.locator('.guide-lesson-choice').filter({ hasText: 'A Thousand Keyholes' }).click();
+  await expect(page.locator('.guide-lesson-detail h3')).toHaveText('A Thousand Keyholes');
+  await expect(page.locator('.guide-lesson-detail').getByRole('button', { name: 'Read this lesson' })).toBeVisible();
+  const after = await page.evaluate(() => window.__speechTest.calls.filter(x => x === 'cancel').length);
+  expect(after).toBeGreaterThan(before);
+});
+
+test('Spanish and French welcoming text has correct language tags and voice', async ({ page }) => {
+  await page.addInitScript(() => {
+    window.__spokenLanguages = [];
+    class FakeUtterance { constructor(text) { this.text = text; } }
+    Object.defineProperty(window, 'SpeechSynthesisUtterance', { configurable: true, value: FakeUtterance });
+    Object.defineProperty(window, 'speechSynthesis', { configurable: true, value: {
+      getVoices: () => [
+        { voiceURI: 'en', name: 'English Voice', lang: 'en-US' },
+        { voiceURI: 'es', name: 'Spanish Voice', lang: 'es-ES' },
+        { voiceURI: 'fr', name: 'French Voice', lang: 'fr-FR' },
+      ],
+      addEventListener: () => {}, removeEventListener: () => {},
+      cancel: () => {}, pause: () => {}, resume: () => {},
+      speak: utterance => { window.__spokenLanguages.push(utterance.lang); utterance.onstart?.(); },
+    }});
+  });
+  await page.goto('./');
+  const welcome = page.locator('.welcome-language-main');
+  await page.getByRole('button', { name: 'Español' }).click();
+  await expect(welcome.locator('.welcome-language-copy')).toHaveAttribute('lang', 'es-ES');
+  await expect(welcome.locator('h2')).toHaveText('Muchas lenguas. Una misma bienvenida.');
+  await welcome.getByRole('button', { name: 'Read this welcome' }).click();
+  expect((await page.evaluate(() => window.__spokenLanguages)).at(-1)).toBe('es-ES');
+  await page.getByRole('button', { name: 'Français' }).click();
+  await expect(welcome.locator('.welcome-language-copy')).toHaveAttribute('lang', 'fr-FR');
+  await welcome.getByRole('button', { name: 'Read this welcome' }).click();
+  expect((await page.evaluate(() => window.__spokenLanguages)).at(-1)).toBe('fr-FR');
+});
+
+test('if speech is unsupported, visible transcripts and ordinary reading still work', async ({ page }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(window, 'speechSynthesis', { configurable: true, value: undefined });
+    Object.defineProperty(window, 'SpeechSynthesisUtterance', { configurable: true, value: undefined });
+  });
+  await page.goto('./');
+  const reader = page.locator('.guide-lesson-detail .speech-reader');
+  await expect(reader).toContainText('This browser has no speech playback support.');
+  await reader.getByText('Read the full narration text').click();
+  await expect(reader.locator('.speech-transcript-body')).toContainText('The Gift of Right Now');
+  await expect(page.locator('#root h1')).toContainText('belong here');
+});
