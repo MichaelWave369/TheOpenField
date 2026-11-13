@@ -41,3 +41,39 @@ test('mobile menu is usable in a narrow viewport', async ({ page }) => {
   await expect(page).toHaveURL(/#principles$/);
   await expect(page.getByRole('button', { name: /Menu/ })).toBeVisible();
 });
+
+
+test('Field Guide chapters render, can be revisited, and persist private progress', async ({ page }) => {
+  const pageErrors = [];
+  page.on('pageerror', error => pageErrors.push(error.message));
+  await page.goto('./');
+  await expect(page.locator('.guide-lesson-choice')).toHaveCount(9);
+  await expect(page.locator('.guide-progress-track')).toHaveAttribute('aria-valuenow', '0');
+
+  await page.locator('.guide-lesson-choice').filter({ hasText: 'Wonder & Evidence' }).click();
+  await expect(page.locator('.guide-lesson-detail h3')).toHaveText('Wonder & Evidence');
+  await expect(page.locator('.guide-lesson-detail')).toContainText('A scientific claim needs evidence');
+  await page.getByRole('button', { name: 'Mark as explored' }).click();
+  await expect(page.locator('.guide-progress-track')).toHaveAttribute('aria-valuenow', '1');
+
+  await page.locator('.guide-reflection a').click();
+  await expect(page).toHaveURL(/#field-notes$/);
+  await expect(page.locator('.prompt-text')).toContainText('What would honestly change my mind?');
+
+  await page.reload();
+  await expect(page.locator('.guide-progress-track')).toHaveAttribute('aria-valuenow', '1');
+  page.once('dialog', dialog => dialog.accept());
+  await page.getByRole('button', { name: 'Clear my progress' }).click();
+  await expect(page.locator('.guide-progress-track')).toHaveAttribute('aria-valuenow', '0');
+  expect(pageErrors).toEqual([]);
+});
+
+test('Field Guide can be reached from the mobile navigation', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./');
+  await page.getByRole('button', { name: /Menu/ }).click();
+  await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'Field guide' }).click();
+  await expect(page).toHaveURL(/#field-guide$/);
+  await expect(page.locator('#field-guide-heading')).toBeVisible();
+  await expect(page.locator('.guide-lesson-detail h3')).toBeVisible();
+});
