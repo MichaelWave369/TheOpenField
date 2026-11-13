@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { grounding, principles, prompts, rooms } from './content.js';
+import FieldGuide from './FieldGuide.jsx';
 
 const NOTE_KEY = 'the-open-field-notes-v1';
 
@@ -139,7 +140,7 @@ function QuietRoom() {
     <section className="section quiet-section" id="quiet-room">
       <div className="container quiet-layout">
         <div>
-          <SectionHeading eyebrow="03 / NO REQUIREMENTS" title={<>A little room<br /><em>to breathe.</em></>} description="You can simply be here. No achievement. No perfect silence. No particular spiritual experience to reach." />
+          <SectionHeading eyebrow="04 / NO REQUIREMENTS" title={<>A little room<br /><em>to breathe.</em></>} description="You can simply be here. No achievement. No perfect silence. No particular spiritual experience to reach." />
           <p className="quiet-copy">If you like, follow the gentle motion of the circle. Breathe naturally and comfortably. Or ignore the circle and enjoy a moment of stillness. Both are welcome.</p>
           <button type="button" className="button button-outline quiet-control" onClick={() => setBreathing(!breathing)} aria-pressed={breathing}>{breathing ? 'Pause the motion' : 'Begin gentle motion'} <span aria-hidden="true">{breathing ? 'Ⅱ' : '↗'}</span></button>
           <p className="tiny-caption">This is an optional visual breathing cue, not a treatment or a timed breathing prescription.</p>
@@ -217,7 +218,7 @@ function FieldNotes({ selectedPrompt, setSelectedPrompt }) {
     <section className="section notes-section" id="field-notes">
       <div className="container notes-layout">
         <div className="notes-intro">
-          <SectionHeading eyebrow="04 / YOUR OWN PERSPECTIVE" title={<>The field<br /><em>notes.</em></>} description="A private place to catch a thought, ask a question, or remember something good." />
+          <SectionHeading eyebrow="05 / YOUR OWN PERSPECTIVE" title={<>The field<br /><em>notes.</em></>} description="A private place to catch a thought, ask a question, or remember something good." />
           <p>There is no account to make and nothing to submit. What you write belongs to you. These notes stay in this browser, not on our servers.</p>
           <div className="notes-privacy"><span aria-hidden="true">◎</span><span>Local to this device. On a shared browser, export your notes and clear them when finished. Clearing browser data may also erase them.</span></div>
         </div>
@@ -243,7 +244,7 @@ function Questions() {
   return (
     <section className="section wonder-section" id="the-mystery">
       <div className="container">
-        <div className="wonder-header"><span className="eyebrow"><span className="eyebrow-line" />05 / ROOM FOR WONDER</span><h2>We can wonder deeply<br /><em>without pretending to know.</em></h2></div>
+        <div className="wonder-header"><span className="eyebrow"><span className="eyebrow-line" />06 / ROOM FOR WONDER</span><h2>We can wonder deeply<br /><em>without pretending to know.</em></h2></div>
         <div className="wonder-grid">
           <div className="wonder-left"><span className="wonder-orbit" aria-hidden="true">◌</span><p className="wonder-quote">What if each of us is a window through which the universe gets to be experienced?</p><span className="wonder-attribution">A question, not an answer.</span></div>
           <div className="wonder-right">
@@ -270,6 +271,7 @@ function App() {
             <a href="#invitation" onClick={() => setMenuOpen(false)}>The invitation</a>
             <a href="#principles" onClick={() => setMenuOpen(false)}>Our principles</a>
             <a href="#doorways" onClick={() => setMenuOpen(false)}>Explore</a>
+            <a href="#field-guide" onClick={() => setMenuOpen(false)}>Field guide</a>
             <a href="#field-notes" className="nav-cta" onClick={() => setMenuOpen(false)}>Your field notes <Arrow diagonal /></a>
           </nav>
         </div>
@@ -304,6 +306,7 @@ function App() {
 
         <Principles />
         <Doorways />
+        <FieldGuide onOpenNote={choosePrompt} />
         <QuietRoom />
         <FieldNotes selectedPrompt={selectedPrompt} setSelectedPrompt={setSelectedPrompt} />
         <Questions />
