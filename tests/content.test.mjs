@@ -119,3 +119,52 @@ test('Living Library browser UI explicitly keeps bookmarks local', () => {
   assert.match(app, /WHAT IT DOES NOT ESTABLISH/);
   assert.doesNotMatch(app, /\bfetch\s*\(/);
 });
+
+
+test('narration covers each guide lesson and preserves original claims and boundaries', async () => {
+  const { lessonNarration, libraryNarration } = await import('../src/narration.js');
+  for (const lesson of fieldGuide) {
+    const script = lessonNarration(lesson);
+    assert.equal(script.length, 6);
+    assert.ok(script.some(line => line.includes(lesson.idea)));
+    assert.ok(script.some(line => line.includes(lesson.lens)));
+    assert.ok(script.some(line => line.includes(lesson.practice)));
+    assert.ok(script.some(line => line.includes(lesson.question)));
+  }
+  for (const topic of libraryTopics) {
+    const script = libraryNarration(topic);
+    assert.equal(script.length, 6);
+    assert.ok(script.some(line => line.includes(topic.notClaim)), topic.id);
+    assert.ok(script.some(line => line.includes(topic.sourceTitle)), topic.id);
+    assert.ok(script.some(line => line.includes(topic.question)), topic.id);
+    assert.ok(script.every(line => !line.includes(topic.sourceUrl)), 'Do not read raw URLs to listeners');
+  }
+});
+
+test('translated welcome is clearly scoped, multilingual and includes consent', async () => {
+  const { welcomes, welcomeNarration, preferredWelcomeLanguage } = await import('../src/narration.js');
+  assert.deepEqual(Object.keys(welcomes), ['en', 'es', 'fr']);
+  assert.equal(preferredWelcomeLanguage('es-MX'), 'es');
+  assert.equal(preferredWelcomeLanguage('fr-CA'), 'fr');
+  assert.equal(preferredWelcomeLanguage('de-DE'), 'en');
+  for (const welcome of Object.values(welcomes)) {
+    assert.ok(welcome.heading.length > 12);
+    assert.ok(welcome.lead.length > 100);
+    assert.ok(welcome.body.length > 110);
+    assert.ok(welcome.quote.length > 45);
+    assert.equal(welcomeNarration(welcome).length, 4);
+  }
+});
+
+test('speech narration never automatically consumes private notes or calls an AI service', () => {
+  const reader = fs.readFileSync(new URL('../src/SpeechReader.jsx', import.meta.url), 'utf8');
+  const scripts = fs.readFileSync(new URL('../src/narration.js', import.meta.url), 'utf8');
+  const welcome = fs.readFileSync(new URL('../src/LanguageWelcome.jsx', import.meta.url), 'utf8');
+  assert.match(reader, /window\\.speechSynthesis/);
+  assert.match(reader, /window\\.SpeechSynthesisUtterance/);
+  assert.match(reader, /synth\\.cancel\\(\\)/);
+  assert.match(reader, /Read the full narration text/);
+  assert.match(welcome, /main learning lessons and Living Library remain in English/);
+  assert.doesNotMatch(reader + scripts, /localStorage\\.getItem\\(NOTE_KEY\\)/);
+  assert.doesNotMatch(reader + scripts, /\\bfetch\\s*\\(/);
+});
