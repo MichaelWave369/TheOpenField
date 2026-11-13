@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { principles, rooms, prompts, grounding } from '../src/content.js';
 import { fieldGuide, movements } from '../src/fieldGuide.js';
+import { libraryTopics, libraryCategories } from '../src/livingLibrary.js';
 
 test('nine inclusive principles are unique and substantive', () => {
   assert.equal(principles.length, 9);
@@ -87,4 +88,34 @@ test('Pages deployment runs real-browser checks before publishing', () => {
   const smokeIndex = workflow.indexOf('npm run test:browser');
   const publishIndex = workflow.indexOf('actions/deploy-pages@v4');
   assert.ok(smokeIndex > 0 && publishIndex > smokeIndex);
+});
+
+
+test('the Living Library provides nine grounded, diverse source-linked perspectives', () => {
+  assert.equal(libraryTopics.length, 9);
+  assert.equal(new Set(libraryTopics.map(topic => topic.id)).size, 9);
+  assert.deepEqual(libraryCategories, ['All','Mind','Traditions','Cosmos','Practice']);
+  for (const topic of libraryTopics) {
+    assert.ok(libraryCategories.includes(topic.category), topic.id);
+    assert.ok(topic.summary.length >= 130, topic.id + ' should explain the idea in original words');
+    assert.ok(topic.grounded.length >= 75, topic.id + ' should distinguish grounded material');
+    assert.ok(topic.notClaim.length >= 90, topic.id + ' needs clear limits');
+    assert.ok(topic.question.endsWith('?'), topic.id);
+    assert.ok(topic.sourceTitle.length > 18, topic.id);
+    const url = new URL(topic.sourceUrl);
+    assert.equal(url.protocol, 'https:', topic.id);
+    assert.ok(['plato.stanford.edu', 'science.nasa.gov', 'www.nccih.nih.gov'].includes(url.hostname), topic.id);
+  }
+  for (const category of libraryCategories.filter(category => category !== 'All')) {
+    assert.ok(libraryTopics.some(topic => topic.category === category), category);
+  }
+});
+
+test('Living Library browser UI explicitly keeps bookmarks local', () => {
+  const app = fs.readFileSync(new URL('../src/LivingLibrary.jsx', import.meta.url), 'utf8');
+  assert.match(app, /window\.localStorage\.setItem/);
+  assert.match(app, /window\.localStorage\.removeItem/);
+  assert.match(app, /rel="noopener noreferrer"/);
+  assert.match(app, /WHAT IT DOES NOT ESTABLISH/);
+  assert.doesNotMatch(app, /\bfetch\s*\(/);
 });

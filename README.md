@@ -29,6 +29,12 @@ Guide progress is **opt-in, local to the browser, and removable**. Neither guide
 
 Deployment is now gated on actual Chromium browser tests, not merely a successful Vite build. This prevents the previous React runtime blank-screen regression from slipping through.
 
+## Living Library (R0.3)
+
+Nine original, curated entries link to the Stanford Encyclopedia of Philosophy, NASA Science, and the NIH National Center for Complementary and Integrative Health. Explore by category or search; each entry separates **the idea**, **what its source supports**, and **what it does not establish**, plus one open question with a direct handoff to Field Notes.
+
+Saved topics use browser-local `localStorage` and can be cleared. No server account, telemetry, reading score, or hidden synchronization. The Library data lives in `src/livingLibrary.js`, the UI in `src/LivingLibrary.jsx`, and the styling in `src/livingLibrary.css`. Corrections and contributions should follow [the Living Library editorial guide](docs/LIVING_LIBRARY_EDITORIAL.md).
+
 ## Run locally
 
 Requires Node.js 22+ and npm.
