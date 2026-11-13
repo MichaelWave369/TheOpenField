@@ -21,6 +21,14 @@ The Pages deployment runs automatically after commits are merged to `main`. **Se
 - Private Field Notes with local browser storage, export to a text file, and an explicit erase button.
 - A distinction between metaphysical possibilities and practical commitments.
 
+## The living Field Guide (R0.2)
+
+Nine optional lessons are arranged across three movements: **Arrive**, **Relate**, and **Create**. Each chapter offers an idea, a careful distinction between what is known and what is a philosophical possibility, a small everyday practice, and an open reflection question. Visitors can send the question to their personal Field Notes without an account.
+
+Guide progress is **opt-in, local to the browser, and removable**. Neither guide progress nor notebook text is collected by this site. Nothing is graded, ranked, or required. Lessons are human-editable in \`src/fieldGuide.js\`. The learning UI lives in \`src/FieldGuide.jsx\` and its responsive styles in \`src/fieldGuide.css\`.
+
+Deployment is now gated on actual Chromium browser tests, not merely a successful Vite build. This prevents the previous React runtime blank-screen regression from slipping through.
+
 ## Run locally
 
 Requires Node.js 22+ and npm.
@@ -35,6 +43,7 @@ Open the local URL printed by Vite. Run quality checks with:
 ```bash
 npm test
 npm run build
+npm run test:browser
 ```
 
 ## Privacy and participation
