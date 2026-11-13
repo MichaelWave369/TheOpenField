@@ -77,3 +77,56 @@ test('Field Guide can be reached from the mobile navigation', async ({ page }) =
   await expect(page.locator('#field-guide-heading')).toBeVisible();
   await expect(page.locator('.guide-lesson-detail h3')).toBeVisible();
 });
+
+
+test('Living Library search filters real references and exposes evidence limits', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  await page.goto('./');
+  await expect(page.locator('.library-topic-card')).toHaveCount(9);
+  await expect(page.locator('.library-detail')).toContainText('WHAT IT DOES NOT ESTABLISH');
+  await page.locator('#living-library-search').fill('microwave');
+  await expect(page.locator('.library-topic-card')).toHaveCount(1);
+  await expect(page.locator('.library-detail h3')).toHaveText('How do we study the early universe?');
+  await expect(page.locator('.library-source a')).toHaveAttribute('href', /science\.nasa\.gov/);
+  await page.locator('#living-library-search').fill('unfindable-phrase-xyz');
+  await expect(page.locator('.library-empty')).toBeVisible();
+  await page.getByRole('button', { name: 'Show all perspectives' }).click();
+  await expect(page.locator('.library-topic-card')).toHaveCount(9);
+  expect(errors).toEqual([]);
+});
+
+test('Living Library bookmarks are local, persistent, and removable', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: '☆ Save for later' }).click();
+  await expect(page.locator('.library-saved-filter strong')).toHaveText('1');
+  await page.reload();
+  await expect(page.locator('.library-saved-filter strong')).toHaveText('1');
+  await page.getByRole('checkbox', { name: /Saved only/ }).check();
+  await expect(page.locator('.library-topic-card')).toHaveCount(1);
+  page.once('dialog', dialog => dialog.accept());
+  await page.getByRole('button', { name: 'Clear my saved topics' }).click();
+  await expect(page.locator('.library-saved-filter strong')).toHaveText('0');
+  await expect(page.locator('.library-topic-card')).toHaveCount(9);
+});
+
+test('Living Library reflection can hand off to the notebook', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: 'Traditions', exact: true }).click();
+  await expect(page.locator('.library-topic-card')).toHaveCount(3);
+  await page.locator('.library-topic-card').filter({ hasText: 'Could a shadow look like the whole world?' }).click();
+  await expect(page.locator('.library-detail h3')).toHaveText('Could a shadow look like the whole world?');
+  await page.locator('.library-question a').click();
+  await expect(page).toHaveURL(/#field-notes$/);
+  await expect(page.locator('.prompt-text')).toHaveText('“Which of my familiar explanations deserve a closer look?”');
+});
+
+test('Living Library is accessible from mobile navigation', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./');
+  await page.getByRole('button', { name: /Menu/ }).click();
+  await page.getByRole('navigation', { name: 'Main navigation' }).getByRole('link', { name: 'Library', exact: true }).click();
+  await expect(page).toHaveURL(/#living-library$/);
+  await expect(page.locator('#living-library-title')).toBeVisible();
+  await expect(page.locator('.library-detail h3')).toBeVisible();
+});
