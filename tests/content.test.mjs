@@ -160,11 +160,11 @@ test('speech narration never automatically consumes private notes or calls an AI
   const reader = fs.readFileSync(new URL('../src/SpeechReader.jsx', import.meta.url), 'utf8');
   const scripts = fs.readFileSync(new URL('../src/narration.js', import.meta.url), 'utf8');
   const welcome = fs.readFileSync(new URL('../src/LanguageWelcome.jsx', import.meta.url), 'utf8');
-  assert.match(reader, /window\\.speechSynthesis/);
-  assert.match(reader, /window\\.SpeechSynthesisUtterance/);
-  assert.match(reader, /synth\\.cancel\\(\\)/);
+  assert.match(reader, /window\.speechSynthesis/);
+  assert.match(reader, /window\.SpeechSynthesisUtterance/);
+  assert.match(reader, /synth\.cancel\(\)/);
   assert.match(reader, /Read the full narration text/);
   assert.match(welcome, /main learning lessons and Living Library remain in English/);
-  assert.doesNotMatch(reader + scripts, /localStorage\\.getItem\\(NOTE_KEY\\)/);
-  assert.doesNotMatch(reader + scripts, /\\bfetch\\s*\\(/);
+  assert.doesNotMatch(reader + scripts, /localStorage\.getItem\(NOTE_KEY\)/);
+  assert.doesNotMatch(reader + scripts, /\bfetch\s*\(/);
 });
