@@ -1,0 +1,94 @@
+/* The Open Field · Field Guide R0.2 · gentle editorial learning space */
+.guide-section { background: #ebe7db; border-top: 1px solid #d9dccb; }
+.guide-heading { display: flex; gap: 8%; align-items: end; justify-content: space-between; margin-bottom: 54px; }
+.guide-heading > div:first-child { max-width: 760px; }
+.guide-heading .eyebrow { color: #55775d; }
+.guide-heading h2 { font-family: 'Playfair Display',Georgia,serif; font-size: clamp(47px,5.4vw,79px); line-height: 1.11; letter-spacing: -.057em; margin: 26px 0 21px; }
+.guide-heading h2 em { font-weight: 400; color: #69826b; }
+.guide-heading > div:first-child > p { max-width: 570px; color: #69796b; font-size: 14px; line-height: 1.9; margin: 0; }
+.guide-progress { width: 270px; flex: none; padding-bottom: 4px; }
+.guide-progress-top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.guide-progress-top > span { color: #607b64; font: 700 9px 'Manrope',sans-serif; letter-spacing: .18em; }
+.guide-progress-top strong { font-family: 'Playfair Display',Georgia,serif; font-size: 29px; font-weight: 400; white-space: nowrap; }
+.guide-progress-top strong span { font: 600 11px 'Manrope',sans-serif; color: #7d907b; }
+.guide-progress-track { height: 5px; width: 100%; background: #d2d9c8; border-radius: 8px; margin-top: 17px; overflow: hidden; }
+.guide-progress-fill { height: 100%; background: #4f8562; border-radius: 8px; transition: width .25s ease; }
+.guide-progress p { font-size: 11px; color: #7b8a78; line-height: 1.65; margin: 13px 0 6px; }
+.guide-reset { border: none; background: transparent; color: #5a7c61; font-size: 11px; font-weight: 700; padding: 6px 0; text-decoration: underline; text-underline-offset: 4px; }
+.guide-reset:disabled { opacity: .35; text-decoration: none; }
+.guide-shell { display: grid; grid-template-columns: minmax(250px,.8fr) minmax(0,1.3fr); box-shadow: 0 18px 52px rgba(27,48,32,.08); }
+.guide-index { background: #f5f5ed; border: 1px solid #dce0d1; border-right: 0; padding: 21px 28px 35px; }
+.guide-movement { padding-top: 18px; }
+.guide-movement + .guide-movement { margin-top: 12px; }
+.guide-movement-label { display: flex; align-items: baseline; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding: 0 3px 16px; }
+.guide-movement-label > span { color: #64866b; font: 800 10px 'Manrope',sans-serif; letter-spacing: .19em; }
+.guide-movement-label small { color: #8b9b88; font: 500 11px 'DM Sans',sans-serif; }
+.guide-lesson-choice { width: 100%; display: grid; grid-template-columns: 37px minmax(0,1fr) 25px; align-items: center; gap: 8px; text-align: left; border: 0; border-top: 1px solid #dfe5d9; padding: 15px 11px 15px 8px; background: transparent; color: #344c39; transition: background .2s,color .2s; }
+.guide-lesson-choice:last-child { border-bottom: 1px solid #dfe5d9; }
+.guide-lesson-choice:hover { background: #e7eee1; }
+.guide-lesson-choice.is-selected { background: #dce7d6; color: #1e4b31; }
+.guide-choice-number { color: #849a82; font-family: 'Manrope',sans-serif; font-size: 10px; letter-spacing: .05em; }
+.guide-choice-name { font-family: 'Playfair Display',Georgia,serif; font-size: clamp(17px,1.55vw,22px); letter-spacing: -.028em; line-height: 1.25; }
+.guide-choice-status { justify-self: end; font-size: 17px; color: #6b936f; }
+.guide-lesson-detail { position: relative; background: radial-gradient(ellipse at 90% 2%,rgba(118,159,117,.21),transparent 49%),#214636; color: #f3f3e7; padding: 47px clamp(35px,4.3vw,67px) 35px; overflow: hidden; }
+.guide-lesson-detail::before { pointer-events: none; content: ''; position: absolute; width: 390px; height: 390px; border: 1px solid rgba(213,231,203,.1); border-radius: 50%; top: -175px; right: -140px; }
+.guide-lesson-detail::after { pointer-events: none; content: ''; position: absolute; width: 260px; height: 260px; border: 1px solid rgba(213,231,203,.08); border-radius: 50%; top: -100px; right: -73px; }
+.guide-lesson-topline { position: relative; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 14px; color: #adcdad; font: 700 10px 'Manrope',sans-serif; letter-spacing: .15em; }
+.guide-lesson-topline span:last-child { text-transform: uppercase; color: #9bb69f; }
+.guide-lesson-mark { font-size: 37px; color: #b7d0a6; margin-top: 39px; line-height: 1; }
+.guide-lesson-subtitle { color: #a9c8a6; font: 700 10px 'Manrope',sans-serif; letter-spacing: .17em; text-transform: uppercase; margin: 25px 0 8px; }
+.guide-lesson-detail h3 { position: relative; font-family: 'Playfair Display',Georgia,serif; font-size: clamp(40px,4.4vw,64px); font-weight: 400; letter-spacing: -.06em; line-height: 1.1; margin: 0 0 31px; }
+.guide-copy-block { border-top: 1px solid rgba(220,238,215,.2); padding-top: 22px; margin-top: 22px; }
+.guide-copy-block > span, .guide-reflection > span { display: block; color: #b5d19f; font: 700 10px 'Manrope',sans-serif; letter-spacing: .19em; }
+.guide-copy-block > p { max-width: 670px; color: #e0ebdf; line-height: 1.85; font-size: 14px; margin: 13px 0 0; }
+.guide-evidence > span { color: #e4cc94; }
+.guide-practice { padding: 22px 23px 24px; border: 1px solid rgba(207,222,193,.27); background: rgba(225,236,204,.065); margin-top: 30px; }
+.guide-practice > p { margin-top: 12px; }
+.guide-reflection { padding-top: 31px; }
+.guide-reflection > p { font-family: 'Playfair Display',Georgia,serif; font-size: clamp(25px,3vw,38px); font-style: italic; letter-spacing: -.035em; line-height: 1.4; margin: 16px 0 19px; color: #f5e5c5; }
+.guide-reflection > a { font-size: 12px; font-weight: 700; text-decoration: none; padding-bottom: 8px; border-bottom: 1px solid #b1cda9; color: #dcf0d8; }
+.guide-reflection > a span { margin-left: 12px; }
+.guide-reflection > a:hover { color: #fff; }
+.guide-takeaway { display: flex; gap: 17px; align-items: baseline; padding: 22px 0; margin: 36px 0 0; border-top: 1px solid rgba(225,237,213,.2); border-bottom: 1px solid rgba(225,237,213,.2); }
+.guide-takeaway span { font-size: 20px; color: #a6caa0; }
+.guide-takeaway p { font: italic 19px/1.5 'Playfair Display',Georgia,serif; color: #d2e4c9; margin: 0; }
+.guide-actions { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-top: 26px; }
+.guide-explore-button { border: 1px solid #cbd7b8; color: #183a29; background: #e2ecd6; min-height: 48px; padding: 12px 18px; font: 700 12px 'DM Sans',sans-serif; }
+.guide-explore-button.was-explored { background: transparent; color: #cce0c5; }
+.guide-explore-button:hover { filter: brightness(1.08); }
+.guide-next-button { border: 0; background: transparent; color: #dbe8ce; min-height: 48px; font-size: 12px; font-weight: 700; padding: 12px 0; }
+.guide-next-button span { margin-left: 13px; font-size: 17px; }
+.guide-storage-message { min-height: 17px; color: #b4ccad; font-size: 11px; margin: 14px 0 0; }
+.guide-bottom-note { display: flex; align-items: baseline; gap: 11px; color: #82927e; font: italic 16px 'Playfair Display',Georgia,serif; margin: 25px 0 0; }
+.guide-bottom-note span { color: #76a47d; font: normal 19px 'DM Sans',sans-serif; }
+
+@media (max-width: 1080px) {
+  .guide-heading { align-items: flex-start; }
+  .guide-shell { grid-template-columns: minmax(260px,.85fr) minmax(0,1.2fr); }
+  .guide-index { padding: 19px 16px 30px; }
+  .guide-lesson-detail { padding: 42px 33px 30px; }
+  .guide-movement-label small { display: none; }
+}
+@media (max-width: 760px) {
+  .guide-heading { flex-direction: column; gap: 29px; }
+  .guide-progress { width: 100%; max-width: 370px; }
+  .guide-shell { grid-template-columns: 1fr; }
+  .guide-index { border-right: 1px solid #dce0d1; padding: 22px 22px 25px; }
+  .guide-movement-label small { display: inline; }
+  .guide-lesson-choice { grid-template-columns: 36px 1fr 25px; }
+  .guide-choice-name { font-size: 22px; }
+  .guide-lesson-detail { padding: 40px 30px; }
+}
+@media (max-width: 480px) {
+  .guide-heading h2 { font-size: clamp(41px,11vw,56px); }
+  .guide-heading > div:first-child > p { font-size: 13px; }
+  .guide-index { padding: 17px 15px 22px; }
+  .guide-movement-label small { font-size: 10px; }
+  .guide-choice-name { font-size: 20px; }
+  .guide-lesson-detail { padding: 33px 22px; }
+  .guide-lesson-detail h3 { font-size: 42px; }
+  .guide-copy-block > p { font-size: 13px; }
+  .guide-practice { padding: 19px; }
+  .guide-takeaway p { font-size: 17px; }
+  .guide-bottom-note { font-size: 14px; }
+}
